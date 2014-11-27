@@ -3321,31 +3321,48 @@ Bitcoin.Util = {
 					return;
 				}
 				var key = new Bitcoin.ECKey(mini);
-				document.getElementById("wifkey").value = key.getBitcoinWalletImportFormat();
-				document.getElementById("address").value = key.getBitcoinAddress();
+				document.getElementById("wifkey").innerHTML = key.getBitcoinWalletImportFormat();
+				document.getElementById("address").innerHTML = key.getBitcoinAddress();
 			}
 		</script>
 	</head>
 	<body>
 		<div class="container">
-			<div class="header">
-				<h3 class="text-muted">StartCOIN Cryptobullion Redemption Tool</h3>
+			<div class="page-header">
+				<h1 class="text-muted">StartCOIN Cryptobullion Redemption Tool</h1>
+				<p class="lead">This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
 			</div>
 
-			<div class="well">
-				<p>This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
-				<form class="form form-inline" role="form">
-					<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
-					<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif()"></input>
-				</form>
-				<form class="form form-inline" role="form">
-					<input type="text" id="wifkey" class="form-control" value="" placeholder="WIF key"></input>
-					<input type="text" id="address" class="form-control" value="" placeholder="StartCOIN address"></input>
-				</form>
-			</div>
+			<div class="row well">
+				<div class="col-md-4">
+					<span class="text-muted" style="font-size:0.8em;display:block;">Minikey</span>
+					<form class="form form-inline" role="form">
+						<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
+						<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif()"></input>
+					</form>
+				</div>
 
+				<div class="col-md-2">
+					<p style="font-size:5em;font-weight:bolder;">&rlhar;</p>
+				</div>
+
+				<div class="col-md-6">
+					<div id="address-container">
+						<span class="text-muted" style="font-size:0.8em;display:block;">Address</span>
+						<span id="address" style="font-size:1em;font-weight:bold;">y</span>
+					</div>
+
+					<br />
+
+					<div id="wif-container">
+						<span class="text-muted" style="font-size:0.8em;display:block;">Wallet Import Format (WIF)</span>
+						<span id="wifkey" style="font-size:1em;font-weight:bold;">eUGCDZG7i4Sn9YWk18vqgkqfuvakQ7ufHiNjPbpDZySWoWeTskWj</span>
+					</div>
+				</div>
+
+			</div>
 			<footer class="footer">
-		    	<p>Created by Luke Mitchell &bullet; StartCOIN Cryptobullion Project &bullet; 2014</p>
+		    	<p>Created by <a href="https://twitter.com/LukeCrypto">LukeCrypto</a> for <a href="http://cryptobullion.eu">Cryptobullion.eu</a> &bullet; 2014 &bullet; StartCOIN Cryptobullion Project</p>
 		    </footer>
 		</div>
 	</body>
