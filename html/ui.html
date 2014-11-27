@@ -2,6 +2,9 @@
 	<head>
 		<!-- Luke Mitchell, December 2014 -->
 		<title>StartCOIN Cryptobullion Redemption Tool</title>
+		<style>
+//bootstrap.min.css
+		</style>
 		<script type="text/javascript">
 //cryptojs.js	
 		</script>
@@ -42,7 +45,7 @@
 			var mini2wif = function(mini) {
 				var mini = document.getElementById("minikey").value;
 				if (!Bitcoin.ECKey.isMiniFormat(mini)) {
-					console.log('Error: key provided is not a valid Minikey');
+					alert("Error: key provided is not a valid Minikey");
 					return;
 				}
 				var key = new Bitcoin.ECKey(mini);
@@ -52,17 +55,26 @@
 		</script>
 	</head>
 	<body>
-		<div>
-			<h1>StartCOIN Cryptobullion Redemption Tool</h1>
-			<p>This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
-			<form>
-				<input type="text" id="minikey" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
-				<input type="button" value="Convert" onclick="mini2wif()"></input>
-			</form>
-			<form>
-				<input type="text" id="wifkey" value="" placeholder="WIF key"></input>
-				<input type="text" id="address" value="" placeholder="StartCOIN address"></input>
-			</form>
+		<div class="container">
+			<div class="header">
+				<h3 class="text-muted">StartCOIN Cryptobullion Redemption Tool</h3>
+			</div>
+
+			<div class="well">
+				<p>This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
+				<form class="form form-inline" role="form">
+					<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
+					<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif()"></input>
+				</form>
+				<form class="form form-inline" role="form">
+					<input type="text" id="wifkey" class="form-control" value="" placeholder="WIF key"></input>
+					<input type="text" id="address" class="form-control" value="" placeholder="StartCOIN address"></input>
+				</form>
+			</div>
+
+			<footer class="footer">
+		    	<p>Created by Luke Mitchell &bullet; StartCOIN Cryptobullion Project &bullet; 2014</p>
+		    </footer>
 		</div>
 	</body>
 </html>

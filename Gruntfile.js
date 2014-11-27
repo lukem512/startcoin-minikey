@@ -19,6 +19,7 @@ module.exports = function (grunt) {
 					{ token: "//cryptojs.js", file: "./js/cryptojs.js" },
 					{ token: "//cryptojs.sha256.js", file: "./js/cryptojs.sha256.js" },
 					{ token: "//cryptojs.ripemd160.js", file: "./js/cryptojs.ripemd160.js" },
+					{ token: "//bootstrap.min.css", file: "./css/bootstrap.min.css" },
 				]
 			}
 		}
