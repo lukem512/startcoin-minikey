@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<!-- Luke Mitchell, December 2014 -->
+		<title>StartCOIN Cryptobullion Redemption Tool</title>
+		<script type="text/javascript">
+//cryptojs.js	
+		</script>
+		<script type="text/javascript">
+//cryptojs.sha256.js	
+		</script>
+		<script type="text/javascript">
+//cryptojs.ripemd160.js
+		</script>
+		<script type="text/javascript">
+//securerandom.js
+		</script>
+		<script type="text/javascript">
+//ellipticcurve.js
+		</script>
+		<script type="text/javascript">
+//biginteger.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.base58.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.address.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.ecdsa.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.eckey.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.util.js
+		</script>
+		<script>
+			var mini2wif = function(mini) {
+				var mini = document.getElementById("minikey").value;
+				if (!Bitcoin.ECKey.isMiniFormat(mini)) {
+					console.log('Error: key provided is not a valid Minikey');
+					return;
+				}
+				var key = new Bitcoin.ECKey(mini);
+				document.getElementById("wifkey").value = key.getBitcoinWalletImportFormat();
+				document.getElementById("address").value = key.getBitcoinAddress();
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<h1>StartCOIN Cryptobullion Redemption Tool</h1>
+			<p>This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
+			<form>
+				<input type="text" id="minikey" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
+				<input type="button" value="Convert" onclick="mini2wif()"></input>
+			</form>
+			<form>
+				<input type="text" id="wifkey" value="" placeholder="WIF key"></input>
+				<input type="text" id="address" value="" placeholder="StartCOIN address"></input>
+			</form>
+		</div>
+	</body>
+</html>
