@@ -3315,18 +3315,6 @@ Bitcoin.Util = {
 };
 		</script>
 		<script>
-			// Converts a Mini key to a WIF key
-			var mini2wif = function() {
-				var mini = document.getElementById("minikey").value;
-				if (!Bitcoin.ECKey.isMiniFormat(mini)) {
-					alert("Error: key provided is not a valid Minikey");
-					return;
-				}
-				var key = new Bitcoin.ECKey(mini);
-				document.getElementById("wifkey").innerHTML = key.getBitcoinWalletImportFormat();
-				document.getElementById("address").innerHTML = key.getBitcoinAddress();
-			}
-
 			// Generates a number of valid Mini keys
 			var minikeychars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
@@ -3359,7 +3347,15 @@ Bitcoin.Util = {
 				return mini.join('');
 			}	
 
-			var genmini = function(n) {
+			var genmini = function() {
+				var n = document.getElementById("n").value;
+				var keysElem = document.getElementById("keys");
+
+				if (parseInt(n) == NaN) {
+					alert("Please enter the number of Minikeys to generate");
+					return;
+				}
+
 				var i = 0;
 				var tries = 0;
 				while (i < n) {
@@ -3377,7 +3373,9 @@ Bitcoin.Util = {
 					var key = new Bitcoin.ECKey(mini);
 
 					// display with address
-					console.log(mini + ":" + key.getBitcoinAddress() + ",");
+
+					keysElem.innerHTML += mini + ":" + key.getBitcoinAddress() + "<br />";
+					//console.log(mini + ":" + key.getBitcoinAddress() + ",");
 					i++;
 				}
 			}
@@ -3386,16 +3384,16 @@ Bitcoin.Util = {
 	<body>
 		<div class="container">
 			<div class="page-header">
-				<h1 class="text-muted">StartCOIN Cryptobullion Redemption Tool</h1>
-				<p class="lead">This tool provides the ability to convert Minikeys, found on your cryptobullion, to Wallet Import Format keys that will be accepted by the StartCOIN wallet.</p>
+				<h1 class="text-muted">StartCOIN Cryptobullion Generation Tool</h1>
+				<p class="lead">This tool provides the ability to generate Minikeys and their corresponding StartCOIN addresses.</p>
 			</div>
 
 			<div class="row well">
 				<div class="col-md-4">
-					<span class="text-muted" style="font-size:0.8em;display:block;">Minikey</span>
+					<span class="text-muted" style="font-size:0.8em;display:block;">Number of keys</span>
 					<form class="form form-inline" role="form">
-						<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
-						<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif();"></input>
+						<input type="text" id="n" class="form-control" value="" placeholder="50"></input>
+						<input type="button" class="btn btn-default" class="form-control" value="Generate" onclick="genmini();"></input>
 					</form>
 				</div>
 
@@ -3404,16 +3402,9 @@ Bitcoin.Util = {
 				</div>
 
 				<div class="col-md-6">
-					<div id="address-container">
-						<span class="text-muted" style="font-size:0.8em;display:block;">Address</span>
-						<span id="address" style="font-size:1em;font-weight:bold;">sgpJoBU1ukMBR5k4kFfNByiqbr9jWyirM9</span>
-					</div>
-
-					<br />
-
-					<div id="wif-container">
-						<span class="text-muted" style="font-size:0.8em;display:block;">Wallet Import Format (WIF)</span>
-						<span id="wifkey" style="font-size:1em;font-weight:bold;">eUGCDZG7i4Sn9YWk18vqgkqfuvakQ7ufHiNjPbpDZySWoWeTskWj</span>
+					<div id="keys-container">
+						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys</span>
+						<span id="keys" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
 					</div>
 				</div>
 

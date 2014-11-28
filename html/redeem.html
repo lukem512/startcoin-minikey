@@ -54,61 +54,6 @@
 				document.getElementById("wifkey").innerHTML = key.getBitcoinWalletImportFormat();
 				document.getElementById("address").innerHTML = key.getBitcoinAddress();
 			}
-
-			// Generates a number of valid Mini keys
-			var minikeychars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-
-			var mini2key = function(mini) {
-				if (!Bitcoin.ECKey.isMiniFormat(mini)) return false;
-				return new Bitcoin.ECKey(mini);
-			}
-
-			function buf2array(buf) {
-				var rs = [];
-				for(var i = 0; i < buf.length; i++) {
-					rs.push(buf[i]);
-				}
-				return rs;
-			}
-
-			var candidate = function() {
-				var mini = ["S"];
-				var size = BigInteger.valueOf(minikeychars.length);
-				var buf = BigInteger.fromByteArrayUnsigned(buf2array(Crypto.util.randomBytes(50).slice(0)));
-				while (mini.length < 30) {
-					var div = buf.divideAndRemainder(size);
-					mini.push(minikeychars.charAt(div[1]));
-					buf = div[0];
-					if (buf.compareTo(BigInteger.ONE) <= 0) {
-						console.log("Ran out of entropy with key only", mini.length, "long");
-						return false;
-					}
-				}
-				return mini.join('');
-			}	
-
-			var genmini = function(n) {
-				var i = 0;
-				var tries = 0;
-				while (i < n) {
-					// make candidate key
-					var mini = candidate();
-					if (mini === false) continue;
-					tries++;
-
-					// test validity
-					var hash = Crypto.SHA256(mini+"?");
-					if (hash[0] != 0) continue;
-
-					// make EC key
-					if (!Bitcoin.ECKey.isMiniFormat(mini)) continue;
-					var key = new Bitcoin.ECKey(mini);
-
-					// display with address
-					console.log(mini + ":" + key.getBitcoinAddress() + ",");
-					i++;
-				}
-			}
 		</script>
 	</head>
 	<body>
@@ -134,14 +79,14 @@
 				<div class="col-md-6">
 					<div id="address-container">
 						<span class="text-muted" style="font-size:0.8em;display:block;">Address</span>
-						<span id="address" style="font-size:1em;font-weight:bold;">sgpJoBU1ukMBR5k4kFfNByiqbr9jWyirM9</span>
+						<span id="address" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
 					</div>
 
 					<br />
 
 					<div id="wif-container">
 						<span class="text-muted" style="font-size:0.8em;display:block;">Wallet Import Format (WIF)</span>
-						<span id="wifkey" style="font-size:1em;font-weight:bold;">eUGCDZG7i4Sn9YWk18vqgkqfuvakQ7ufHiNjPbpDZySWoWeTskWj</span>
+						<span id="wifkey" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
 					</div>
 				</div>
 

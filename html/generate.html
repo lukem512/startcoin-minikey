@@ -1,0 +1,145 @@
+<html>
+	<head>
+		<!-- Luke Mitchell, December 2014 -->
+		<title>StartCOIN Cryptobullion Redemption Tool</title>
+		<meta charset="UTF-8"> 
+		<style>
+//bootstrap.min.css
+		</style>
+		<script type="text/javascript">
+//cryptojs.js	
+		</script>
+		<script type="text/javascript">
+//cryptojs.sha256.js	
+		</script>
+		<script type="text/javascript">
+//cryptojs.ripemd160.js
+		</script>
+		<script type="text/javascript">
+//securerandom.js
+		</script>
+		<script type="text/javascript">
+//ellipticcurve.js
+		</script>
+		<script type="text/javascript">
+//biginteger.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.base58.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.address.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.ecdsa.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.eckey.js
+		</script>
+		<script type="text/javascript">
+//bitcoinjs-lib.util.js
+		</script>
+		<script>
+			// Generates a number of valid Mini keys
+			var minikeychars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+			var mini2key = function(mini) {
+				if (!Bitcoin.ECKey.isMiniFormat(mini)) return false;
+				return new Bitcoin.ECKey(mini);
+			}
+
+			function buf2array(buf) {
+				var rs = [];
+				for(var i = 0; i < buf.length; i++) {
+					rs.push(buf[i]);
+				}
+				return rs;
+			}
+
+			var candidate = function() {
+				var mini = ["S"];
+				var size = BigInteger.valueOf(minikeychars.length);
+				var buf = BigInteger.fromByteArrayUnsigned(buf2array(Crypto.util.randomBytes(50).slice(0)));
+				while (mini.length < 30) {
+					var div = buf.divideAndRemainder(size);
+					mini.push(minikeychars.charAt(div[1]));
+					buf = div[0];
+					if (buf.compareTo(BigInteger.ONE) <= 0) {
+						console.log("Ran out of entropy with key only", mini.length, "long");
+						return false;
+					}
+				}
+				return mini.join('');
+			}	
+
+			var genmini = function() {
+				var n = document.getElementById("n").value;
+				var keysElem = document.getElementById("keys");
+
+				if (parseInt(n) == NaN) {
+					alert("Please enter the number of Minikeys to generate");
+					return;
+				}
+
+				var i = 0;
+				var tries = 0;
+				while (i < n) {
+					// make candidate key
+					var mini = candidate();
+					if (mini === false) continue;
+					tries++;
+
+					// test validity
+					var hash = Crypto.SHA256(mini+"?");
+					if (hash[0] != 0) continue;
+
+					// make EC key
+					if (!Bitcoin.ECKey.isMiniFormat(mini)) continue;
+					var key = new Bitcoin.ECKey(mini);
+
+					// display with address
+
+					keysElem.innerHTML += mini + ":" + key.getBitcoinAddress() + "<br />";
+					//console.log(mini + ":" + key.getBitcoinAddress() + ",");
+					i++;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="page-header">
+				<h1 class="text-muted">StartCOIN Cryptobullion Generation Tool</h1>
+				<p class="lead">This tool provides the ability to generate Minikeys and their corresponding StartCOIN addresses.</p>
+			</div>
+
+			<div class="row well">
+				<div class="col-md-4">
+					<span class="text-muted" style="font-size:0.8em;display:block;">Number of keys</span>
+					<form class="form form-inline" role="form">
+						<input type="text" id="n" class="form-control" value="" placeholder="50"></input>
+						<input type="button" class="btn btn-default" class="form-control" value="Generate" onclick="genmini();"></input>
+					</form>
+				</div>
+
+				<div class="col-md-2">
+					<p style="font-size:5em;font-weight:bolder;">&rlhar;</p>
+				</div>
+
+				<div class="col-md-6">
+					<div id="keys-container">
+						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys</span>
+						<span id="keys" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
+					</div>
+				</div>
+
+			</div>
+			<footer class="footer">
+		    	<p>Created by <a href="https://twitter.com/LukeCrypto">LukeCrypto</a> for <a href="http://cryptobullion.eu">Cryptobullion.eu</a> &bullet; 2014 &bullet; StartCOIN Cryptobullion Project</p>
+		    </footer>
+		</div>
+	</body>
+</html>
