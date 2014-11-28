@@ -3314,6 +3314,7 @@ Bitcoin.Util = {
 };
 		</script>
 		<script>
+			// Converts a Mini key to a WIF key
 			var mini2wif = function() {
 				var mini = document.getElementById("minikey").value;
 				if (!Bitcoin.ECKey.isMiniFormat(mini)) {
@@ -3325,6 +3326,7 @@ Bitcoin.Util = {
 				document.getElementById("address").innerHTML = key.getBitcoinAddress();
 			}
 
+			// Generates a number of valid Mini keys
 			var minikeychars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 			var mini2key = function(mini) {
@@ -3367,14 +3369,14 @@ Bitcoin.Util = {
 
 					// test validity
 					var hash = Crypto.SHA256(mini+"?");
-					if (hash.readUInt8(0) != 0) continue;
+					if (hash[0] != 0) continue;
 
 					// make EC key
 					if (!Bitcoin.ECKey.isMiniFormat(mini)) continue;
 					var key = new Bitcoin.ECKey(mini);
 
 					// display with address
-					console.log(mini + ":" + key.getBitcoinAddress());
+					console.log(mini + ":" + key.getBitcoinAddress() + ",");
 					i++;
 				}
 			}
@@ -3393,7 +3395,6 @@ Bitcoin.Util = {
 					<form class="form form-inline" role="form">
 						<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
 						<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif();"></input>
-						<input type="button" class="btn btn-default" class="form-control" value="Generate" onclick="genmini(1);"></input>
 					</form>
 				</div>
 
