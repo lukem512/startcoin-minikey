@@ -3314,7 +3314,7 @@ Bitcoin.Util = {
 };
 		</script>
 		<script>
-			var mini2wif = function(mini) {
+			var mini2wif = function() {
 				var mini = document.getElementById("minikey").value;
 				if (!Bitcoin.ECKey.isMiniFormat(mini)) {
 					alert("Error: key provided is not a valid Minikey");
@@ -3323,6 +3323,60 @@ Bitcoin.Util = {
 				var key = new Bitcoin.ECKey(mini);
 				document.getElementById("wifkey").innerHTML = key.getBitcoinWalletImportFormat();
 				document.getElementById("address").innerHTML = key.getBitcoinAddress();
+			}
+
+			var minikeychars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+			var mini2key = function(mini) {
+				if (!Bitcoin.ECKey.isMiniFormat(mini)) return false;
+				return new Bitcoin.ECKey(mini);
+			}
+
+			function buf2array(buf) {
+				var rs = [];
+				for(var i = 0; i < buf.length; i++) {
+					rs.push(buf[i]);
+				}
+				return rs;
+			}
+
+			var candidate = function() {
+				var mini = ["S"];
+				var size = BigInteger.valueOf(minikeychars.length);
+				var buf = BigInteger.fromByteArrayUnsigned(buf2array(Crypto.util.randomBytes(50).slice(0)));
+				while (mini.length < 30) {
+					var div = buf.divideAndRemainder(size);
+					mini.push(minikeychars.charAt(div[1]));
+					buf = div[0];
+					if (buf.compareTo(BigInteger.ONE) <= 0) {
+						console.log("Ran out of entropy with key only", mini.length, "long");
+						return false;
+					}
+				}
+				return mini.join('');
+			}	
+
+			var genmini = function(n) {
+				var i = 0;
+				var tries = 0;
+				while (i < n) {
+					// make candidate key
+					var mini = candidate();
+					if (mini === false) continue;
+					tries++;
+
+					// test validity
+					var hash = Crypto.SHA256(mini+"?");
+					if (hash.readUInt8(0) != 0) continue;
+
+					// make EC key
+					if (!Bitcoin.ECKey.isMiniFormat(mini)) continue;
+					var key = new Bitcoin.ECKey(mini);
+
+					// display with address
+					console.log(mini + ":" + key.getBitcoinAddress());
+					i++;
+				}
 			}
 		</script>
 	</head>
@@ -3339,6 +3393,7 @@ Bitcoin.Util = {
 					<form class="form form-inline" role="form">
 						<input type="text" id="minikey" class="form-control" value="" placeholder="S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"></input>
 						<input type="button" class="btn btn-default" class="form-control" value="Convert" onclick="mini2wif();"></input>
+						<input type="button" class="btn btn-default" class="form-control" value="Generate" onclick="genmini(1);"></input>
 					</form>
 				</div>
 
