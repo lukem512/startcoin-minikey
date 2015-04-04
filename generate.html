@@ -3390,6 +3390,7 @@ Bitcoin.Util = {
 		            range.selectNode(document.getElementById(containerid));
 		            window.getSelection().addRange(range);
 		        }
+		        window.prompt("Copy to clipboard by using CTRL+C then Enter", range);
 			}
 		</script>
 	</head>
@@ -3415,7 +3416,7 @@ Bitcoin.Util = {
 
 				<div class="col-md-6">
 					<div id="keys-container">
-						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys (minikey:address) [<a href="#" onclick="selectRange('keys')">select</a>]</span>
+						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys (minikey:address) [<a href="#" onclick="selectRange('keys')">Select</a>]</span>
 						<span id="keys" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
 					</div>
 				</div>
