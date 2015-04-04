@@ -107,6 +107,18 @@
 					i++;
 				}
 			}
+
+			var selectRange = function(containerid) {
+				if (document.selection) {
+		            var range = document.body.createTextRange();
+		            range.moveToElementText(document.getElementById(containerid));
+		            range.select();
+		        } else if (window.getSelection) {
+		            var range = document.createRange();
+		            range.selectNode(document.getElementById(containerid));
+		            window.getSelection().addRange(range);
+		        }
+			}
 		</script>
 	</head>
 	<body>
@@ -131,7 +143,7 @@
 
 				<div class="col-md-6">
 					<div id="keys-container">
-						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys (minikey:address)</span>
+						<span class="text-muted" style="font-size:0.8em;display:block;">Generated keys (minikey:address) [<a href="#" onclick="selectRange('keys')">select</a>]</span>
 						<span id="keys" style="font-size:1em;font-weight:bold;font-family:Courier,monospace"></span>
 					</div>
 				</div>
