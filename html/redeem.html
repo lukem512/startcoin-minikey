@@ -1,11 +1,21 @@
 <html>
 	<head>
 		<!-- Luke Mitchell, December 2014 -->
+		<!-- https://github.com/lukem512/startcoin-minikey -->
 		<title>StartCOIN Cryptobullion Redemption Tool</title>
-		<meta charset="UTF-8"> 
+		<meta charset="UTF-8">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="data:image/png;base64,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"/>
+		<!-- End of Favicon -->
+
+		<!-- Stylesheets -->
 		<style>
 //bootstrap.min.css
 		</style>
+		<!-- End of Stylesheets -->
+
+		<!-- CryptoJS -->
 		<script type="text/javascript">
 //cryptojs.js	
 		</script>
@@ -15,6 +25,9 @@
 		<script type="text/javascript">
 //cryptojs.ripemd160.js
 		</script>
+		<!-- End of CryptoJS -->
+
+		<!-- BitcoinJS-lib (StartCOIN-ified) -->
 		<script type="text/javascript">
 //securerandom.js
 		</script>
@@ -42,6 +55,8 @@
 		<script type="text/javascript">
 //bitcoinjs-lib.util.js
 		</script>
+		<!-- End of BitcoinJS-lib -->
+
 		<script>
 			// Converts a Mini key to a WIF key
 			var mini2wif = function() {
